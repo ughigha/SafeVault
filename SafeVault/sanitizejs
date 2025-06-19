@@ -1,0 +1,11 @@
+function sanitizeInput(input) {
+return encodeURIComponent(input);
+}
+
+const username = document.getElementById("username").value;
+const email = document.getElementById("email").value;
+
+const sanitizedUsername = sanitizeInput(username);
+const sanitizedEmail = sanitizeInput(email);
+
+console.log(sanitizedUsername, sanitizedEmail);

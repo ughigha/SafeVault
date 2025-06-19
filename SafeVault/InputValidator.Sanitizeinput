@@ -1,0 +1,13 @@
+[Fact]
+public void SanitizeInput_ShouldRemove_XSSScriptTags()
+{
+    // Arrange
+    var xssPayload = "<script>alert('XSS');</script><b>Hello</b>";
+    var expected = "alert(&#39;XSS&#39;)Hello"; // Depending on how encoding is applied
+
+    // Act
+    var sanitized = InputValidator.SanitizeInput(xssPayload);
+
+    // Assert
+    Assert.Equal(expected, sanitized);
+}

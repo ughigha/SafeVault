@@ -1,0 +1,1 @@
+string query = "SELECT * FROM Users WHERE Username = '" + username + "'";

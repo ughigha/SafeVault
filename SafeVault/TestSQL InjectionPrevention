@@ -1,0 +1,13 @@
+[Fact]
+void Login_ShouldReject_SQLInjectionInput()
+{
+    // Arrange
+    var maliciousInput = "' OR 1=1 --";
+    var authService = new AuthService("your-connection-string");
+
+    // Act
+    var result = authService.ValidateLogin(maliciousInput, "irrelevant");
+
+    // Assert
+    Assert.False(result, "SQL injection input should not bypass authentication.");
+}

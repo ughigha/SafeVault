@@ -1,0 +1,22 @@
+[Fact]
+async Task Login_ShouldFail_WithInvalidCredentials()
+{
+    // Arrange
+    var mockSignInManager = TestHelper.GetMockSignInManager();
+    mockSignInManager.Setup(m => m.PasswordSignInAsync(
+        It.IsAny<string>(), It.IsAny<string>(), false, false))
+        .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+
+    var controller = new AccountController(mockSignInManager.Object);
+
+    // Act
+    var result = await controller.Login(new LoginViewModel
+    {
+        Email = "fake@user.com",
+        Password = "WrongPass!"
+    });
+
+    // Assert
+    Assert.IsType<ViewResult>(result);
+    Assert.False(controller.ModelState.IsValid);
+}

@@ -1,0 +1,16 @@
+public static IEnumerable<object[]> XssPayloads => new List<object[]>
+{
+    new object[] { "<img src=x onerror=alert(1)>", "img src=x onerror=alert(1)" },
+    new object[] { "<iframe src='evil.com'></iframe>", "iframe src='evil.com'" },
+    new object[] { "<svg onload=alert(1)>", "svg onload=alert(1)" }
+};
+
+[Theory]
+[MemberData(nameof(XssPayloads))]
+void SanitizeInput_ShouldRemove_XSSPatterns(string input, string expectedPartial)
+{
+    var result = InputValidator.SanitizeInput(input);
+    Assert.DoesNotContain("<script>", result);
+    Assert.DoesNotContain("onerror", result.ToLower());
+    Assert.DoesNotContain("<", result); // if you’re stripping tags entirely
+}

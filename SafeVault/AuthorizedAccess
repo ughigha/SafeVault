@@ -1,0 +1,24 @@
+public class AdminControllerTests
+{
+    [Fact]
+    public void AdminEndpoint_ShouldAllow_AdminUser()
+    {
+        // Arrange
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Name, "admin@example.com"),
+            new Claim(ClaimTypes.Role, "Admin")
+        }, "mock"));
+
+        var httpContext = new DefaultHttpContext { User = user };
+        var controllerContext = new ControllerContext { HttpContext = httpContext };
+
+        var controller = new AdminController { ControllerContext = controllerContext };
+
+        // Act
+        var result = controller.Dashboard();
+
+        // Assert
+        Assert.IsType<ViewResult>(result);
+    }
+}
